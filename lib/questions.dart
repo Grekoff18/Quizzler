@@ -6,12 +6,4 @@ class Question {
     this.questionText = question;
     this.questionAnswer = answer;
   }
-
-  String getText() {
-    return this.questionText;
-  }
-
-  bool getAnswer() {
-    return this.questionAnswer;
-  }
 }

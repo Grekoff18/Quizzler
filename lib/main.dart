@@ -28,10 +28,6 @@ class Quizzler extends StatefulWidget {
 
 class _QuizzlerState extends State<Quizzler> {
 
-  List<Icon> scoreList = [];
-
-  int questionNumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +48,7 @@ class _QuizzlerState extends State<Quizzler> {
                   padding: EdgeInsets.all(10.0),
                   child: Center(
                     child: Text(
-                      quizBrain.questionList[questionNumber].getText(),
+                      quizBrain.getQuestion(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 25.0,
@@ -77,16 +73,8 @@ class _QuizzlerState extends State<Quizzler> {
                       ),
                     ),
                     onPressed: () {
-                      quizBrain.questionList[questionNumber].questionAnswer = true;
-
                       setState(() {
-                        questionNumber == 2 ? questionNumber = 0 : questionNumber++;
-                        scoreList.add(
-                          Icon(
-                            Icons.check,
-                            color: Colors.green,
-                          )
-                        );
+                        quizBrain.checkAnswer(true, context);
                       });
                     },
                   ),
@@ -108,7 +96,7 @@ class _QuizzlerState extends State<Quizzler> {
                     ),
                     onPressed: () {
                       setState(() {
-                        questionNumber == 2 ? questionNumber = 0 : questionNumber++;
+                        quizBrain.checkAnswer(false, context);
                       });
                     },
                   ),
@@ -116,7 +104,7 @@ class _QuizzlerState extends State<Quizzler> {
               ),
               Expanded(
                 child: Wrap(
-                  children: scoreList,
+                  children: quizBrain.scoreList,
                 ),
               ),
             ],

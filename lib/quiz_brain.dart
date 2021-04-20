@@ -1,7 +1,12 @@
 import 'questions.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter/material.dart';
 
 class QuizBrain {
-  List<Question> questionList = [
+  int _questionNumber = 0;
+  List<Icon> scoreList = [];
+
+  List<Question> _questionList = [
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
     Question("A slug's blood is green.", true),
@@ -31,4 +36,51 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+
+  void nextAnswer(context) {
+    if (_questionNumber < _questionList.length - 1) {
+      _questionNumber++;
+    } else {
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Warning",
+        desc: "You have answered all the questions. After you click the button below, the game will start from scratch.",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Start",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => {
+              _questionNumber = 0,
+              scoreList.clear(),
+              Navigator.pop(context),
+            },
+            width: 120,
+          )
+        ],
+      ).show();
+    }
+  }
+
+  String getQuestion() {
+    return _questionList[_questionNumber].questionText;
+  }
+
+  bool getAnswer() {
+    return _questionList[_questionNumber].questionAnswer;
+  }
+
+  void checkAnswer( bool correctAnswer, context ) {
+    bool getUserAnswer = getAnswer();
+
+    if (correctAnswer == getUserAnswer) {
+      scoreList.add(Icon(Icons.check, color: Colors.green));
+    } else {
+      scoreList.add(Icon(Icons.close, color: Colors.red));
+    }
+
+    nextAnswer(context);
+  }
 }
